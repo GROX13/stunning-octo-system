@@ -22,10 +22,18 @@ public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder) {
+	private final SchedulingService schedulingService;
+
+	public UserService(
+			UserRepository userRepository,
+			UserConverter userConverter,
+			PasswordEncoder passwordEncoder,
+			SchedulingService schedulingService
+	) {
 		this.userRepository = userRepository;
 		this.userConverter = userConverter;
 		this.passwordEncoder = passwordEncoder;
+		this.schedulingService = schedulingService;
 	}
 
 	@Transactional

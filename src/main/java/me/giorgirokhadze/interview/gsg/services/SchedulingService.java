@@ -1,6 +1,5 @@
 package me.giorgirokhadze.interview.gsg.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ public class SchedulingService {
 
 	private final TaskScheduler executor;
 
-	@Autowired
 	public SchedulingService(TaskScheduler executor) {
 		this.executor = executor;
 	}
