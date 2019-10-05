@@ -30,3 +30,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### API Keys ###
+src/main/resources/client_secret_307262347372-8u4tlginioptjbvqui841lcu22o2ert0.apps.googleusercontent.com.json
+src/main/resources/youtube_api_key.txt
