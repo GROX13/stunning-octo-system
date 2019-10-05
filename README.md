@@ -6,7 +6,7 @@ If you need to use existing data initializer you need to run application with `-
 ### Accessing the H2 Console
 
 H2 database has an embedded GUI console for browsing the contents of a database, after starting the application, we can navigate to http://localhost:8080/h2-console which will present us with a login page. 
-On the login page, we'll supply the same credentials as we used in the application.properties.
+On the login page, we'll supply the same credentials as we used in the `application.properties`.
 
 #### Possible issues
 
