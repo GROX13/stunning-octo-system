@@ -7,6 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
@@ -32,7 +33,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		UserEntity user = userRepository.findByUsername(username);
 
 		if (user != null && passwordEncoder.matches(password, user.getEncodedPassword())) {
-			return new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());
+			return new UsernamePasswordAuthenticationToken(username, password, Collections.singletonList(
+					new SimpleGrantedAuthority("USER")
+			));
 		}
 		throw new BadCredentialsException(String.format("Authentication failed for user: %s", username));
 	}

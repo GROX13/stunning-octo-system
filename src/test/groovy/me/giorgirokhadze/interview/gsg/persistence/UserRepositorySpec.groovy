@@ -14,27 +14,27 @@ class UserRepositorySpec extends Specification {
 	private UserRepository userRepository
 
 	@Autowired
-	private VideoRepository videoRepository
-
-	@Autowired
-	private CommentRepository commentRepository
-
-	@Autowired
 	private PasswordEncoder passwordEncoder
 
 	@Test
-	def 'should correctly save data and be abel to read from database'() {
+	def 'should correctly save data and be able to read from database'() {
 		given:
 		def user = new UserEntity()
 		user.username = 'test'
 		user.encodedPassword = passwordEncoder.encode("pass123")
+		user.regionCode = "ge"
+		user.scheduledMinutes = 30
 
 		when:
-		userRepository.saveAndFlush(user)
+		def savedUser = userRepository.saveAndFlush(user)
 
 		then:
 		noExceptionThrown()
 
-	}
+		when:
+		userRepository.delete(savedUser)
 
+		then:
+		noExceptionThrown()
+	}
 }

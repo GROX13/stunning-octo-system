@@ -13,8 +13,11 @@ public class UserEntity {
 	@Column(name = "username", unique = true, nullable = false, updatable = false)
 	private String username;
 
-	@Column(name = "regionCode", unique = true, nullable = false)
+	@Column(name = "region_code", nullable = false)
 	private String regionCode;
+
+	@Column(name = "scheduled_minutes", nullable = false)
+	private Integer scheduledMinutes;
 
 	@Column(name = "encoded_password", nullable = false)
 	private String encodedPassword;
@@ -45,6 +48,14 @@ public class UserEntity {
 
 	public void setRegionCode(String regionCode) {
 		this.regionCode = regionCode;
+	}
+
+	public Integer getScheduledMinutes() {
+		return scheduledMinutes;
+	}
+
+	public void setScheduledMinutes(Integer scheduledMinutes) {
+		this.scheduledMinutes = scheduledMinutes;
 	}
 
 	public String getEncodedPassword() {
