@@ -1,4 +1,4 @@
-package me.giorgirokhadze.interview.gdg.persistence.entities;
+package me.giorgirokhadze.interview.gsg.persistence.entities;
 
 import javax.persistence.*;
 import java.util.List;

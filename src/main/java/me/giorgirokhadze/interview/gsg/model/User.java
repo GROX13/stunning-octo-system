@@ -1,4 +1,4 @@
-package me.giorgirokhadze.interview.gdg.model;
+package me.giorgirokhadze.interview.gsg.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -7,7 +7,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 	private String username;
-	private String locale;
+	private String regionCode;
 	private int scheduledMinutes;
 	private List<Video> videos;
 
@@ -19,12 +19,12 @@ public class User {
 		this.username = username;
 	}
 
-	public String getLocale() {
-		return locale;
+	public String getRegionCode() {
+		return regionCode;
 	}
 
-	public void setLocale(String locale) {
-		this.locale = locale;
+	public void setRegionCode(String regionCode) {
+		this.regionCode = regionCode;
 	}
 
 	public int getScheduledMinutes() {

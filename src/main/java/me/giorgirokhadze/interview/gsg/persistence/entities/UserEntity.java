@@ -1,4 +1,4 @@
-package me.giorgirokhadze.interview.gdg.persistence.entities;
+package me.giorgirokhadze.interview.gsg.persistence.entities;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +12,9 @@ public class UserEntity {
 
 	@Column(name = "username", unique = true, nullable = false, updatable = false)
 	private String username;
+
+	@Column(name = "regionCode", unique = true, nullable = false)
+	private String regionCode;
 
 	@Column(name = "encoded_password", nullable = false)
 	private String encodedPassword;
@@ -34,6 +37,14 @@ public class UserEntity {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getRegionCode() {
+		return regionCode;
+	}
+
+	public void setRegionCode(String regionCode) {
+		this.regionCode = regionCode;
 	}
 
 	public String getEncodedPassword() {

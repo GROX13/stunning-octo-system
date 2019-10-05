@@ -1,10 +1,10 @@
-package me.giorgirokhadze.interview.gdg;
+package me.giorgirokhadze.interview.gsg;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GdgApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

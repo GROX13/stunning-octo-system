@@ -1,4 +1,4 @@
-package me.giorgirokhadze.interview.gdg.model;
+package me.giorgirokhadze.interview.gsg.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
