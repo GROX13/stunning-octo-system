@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class AccountService {
+public class UserService {
 
 	private final UserRepository userRepository;
 
@@ -22,7 +22,7 @@ public class AccountService {
 
 	private final PasswordEncoder passwordEncoder;
 
-	public AccountService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.userConverter = userConverter;
 		this.passwordEncoder = passwordEncoder;

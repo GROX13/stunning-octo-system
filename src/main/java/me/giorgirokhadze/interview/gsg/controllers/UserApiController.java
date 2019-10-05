@@ -2,7 +2,7 @@ package me.giorgirokhadze.interview.gsg.controllers;
 
 import me.giorgirokhadze.interview.gsg.controllers.model.RegistrationData;
 import me.giorgirokhadze.interview.gsg.controllers.model.UserData;
-import me.giorgirokhadze.interview.gsg.services.AccountService;
+import me.giorgirokhadze.interview.gsg.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,27 +17,27 @@ import java.util.Map;
 @RestController
 public class UserApiController {
 
-	private final AccountService accountService;
+	private final UserService userService;
 
 	@Autowired
-	public UserApiController(AccountService accountService) {
-		this.accountService = accountService;
+	public UserApiController(UserService userService) {
+		this.userService = userService;
 	}
 
 	@GetMapping("/user")
 	public ResponseEntity getUser() {
-		return ResponseEntity.ok().body(accountService.getLoggedInUser());
+		return ResponseEntity.ok().body(userService.getLoggedInUser());
 	}
 
 	@PostMapping("/user/update")
 	public ResponseEntity updateUser(@Valid @RequestBody UserData userData) {
-		accountService.updateUser(userData);
+		userService.updateUser(userData);
 		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/user/register")
 	public ResponseEntity registerUser(@Valid @RequestBody RegistrationData registrationData) {
-		accountService.registerUser(registrationData);
+		userService.registerUser(registrationData);
 		return ResponseEntity.ok().build();
 	}
 
