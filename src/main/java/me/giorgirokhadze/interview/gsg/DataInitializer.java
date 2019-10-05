@@ -3,10 +3,8 @@ package me.giorgirokhadze.interview.gsg;
 import me.giorgirokhadze.interview.gsg.persistence.UserRepository;
 import me.giorgirokhadze.interview.gsg.persistence.entities.UserEntity;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile("dev")
 public class DataInitializer implements CommandLineRunner {
 
 	private static final String USERNAME = "giorgi";

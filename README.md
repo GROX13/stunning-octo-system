@@ -1,3 +1,8 @@
+### Running with correct profile
+
+For testing purposes I have added data initializer which saves default user in database. Because I wanted to avoid leaking this kind of user in production I made data initializer only available in `dev` profile.
+If you need to use existing data initializer you need to run application with `-Dspring.profiles.active=dev` VM option.
+
 ### Accessing the H2 Console
 
 H2 database has an embedded GUI console for browsing the contents of a database, after starting the application, we can navigate to http://localhost:8080/h2-console which will present us with a login page. 
