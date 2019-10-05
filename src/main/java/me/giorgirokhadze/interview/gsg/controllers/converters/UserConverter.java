@@ -15,6 +15,7 @@ public class UserConverter implements Converter<UserEntity, User> {
 		user.setUsername(originalValue.getUsername());
 		user.setRegionCode(originalValue.getRegionCode());
 		user.setScheduledMinutes(originalValue.getScheduledMinutes());
+		// TODO: convert videos and comment details
 		user.setVideos(Collections.emptyList());
 		return user;
 	}

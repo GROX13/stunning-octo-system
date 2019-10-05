@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class AccountController {
+public class UserApiController {
 
 	private final AccountService accountService;
 
 	@Autowired
-	public AccountController(AccountService accountService) {
+	public UserApiController(AccountService accountService) {
 		this.accountService = accountService;
 	}
 
