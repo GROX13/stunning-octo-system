@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
-public class YoutubeSchedulingService {
+public class SchedulingService {
 
 	private final Map<Long, ScheduledFuture<?>> scheduledJobs = new HashMap<>();
 
 	private final TaskScheduler executor;
 
 	@Autowired
-	public YoutubeSchedulingService(TaskScheduler executor) {
+	public SchedulingService(TaskScheduler executor) {
 		this.executor = executor;
 	}
 
