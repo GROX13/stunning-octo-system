@@ -33,4 +33,6 @@ out/
 
 ### API Keys ###
 src/main/resources/client_secret.json
+src/main/resources/stunning-octo-system.json
 src/main/resources/youtube_api_key.txt
+src/main/resources/service_account_key.txt

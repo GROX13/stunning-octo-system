@@ -1,20 +1,27 @@
 package me.giorgirokhadze.interview.gsg.services;
 
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.CommentThreadListResponse;
+import com.google.api.services.youtube.model.VideoListResponse;
 import me.giorgirokhadze.interview.gsg.controllers.converters.UserConverter;
 import me.giorgirokhadze.interview.gsg.controllers.model.RegistrationData;
 import me.giorgirokhadze.interview.gsg.controllers.model.UserData;
 import me.giorgirokhadze.interview.gsg.model.User;
 import me.giorgirokhadze.interview.gsg.persistence.UserRepository;
 import me.giorgirokhadze.interview.gsg.persistence.entities.UserEntity;
+import me.giorgirokhadze.interview.gsg.utils.YoutubeUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 
 @Service
 public class UserService {
+
+	private final YouTube youtubeService;
 
 	private final UserRepository userRepository;
 
@@ -24,16 +31,22 @@ public class UserService {
 
 	private final SchedulingService schedulingService;
 
+	private final YoutubeUtils.ApiKeyProvider apiKeyProvider;
+
 	public UserService(
+			YouTube youtubeService,
 			UserRepository userRepository,
 			UserConverter userConverter,
 			PasswordEncoder passwordEncoder,
-			SchedulingService schedulingService
+			SchedulingService schedulingService,
+			YoutubeUtils.ApiKeyProvider apiKeyProvider
 	) {
+		this.youtubeService = youtubeService;
 		this.userRepository = userRepository;
 		this.userConverter = userConverter;
 		this.passwordEncoder = passwordEncoder;
 		this.schedulingService = schedulingService;
+		this.apiKeyProvider = apiKeyProvider;
 	}
 
 	@Transactional
@@ -42,7 +55,13 @@ public class UserService {
 		user.setScheduledMinutes(userData.getScheduledMinutes());
 		user.setRegionCode(userData.getRegionCode());
 
-		userRepository.saveAndFlush(user);
+		final UserEntity savedEntity = userRepository.saveAndFlush(user);
+
+		schedulingService.schedule(
+				getRunnable(savedEntity),
+				savedEntity.getScheduledMinutes(),
+				savedEntity.getId()
+		);
 	}
 
 	@Transactional
@@ -53,7 +72,13 @@ public class UserService {
 		user.setRegionCode(registrationData.getRegionCode());
 		user.setScheduledMinutes(registrationData.getScheduledMinutes());
 
-		userRepository.saveAndFlush(user);
+		final UserEntity savedEntity = userRepository.saveAndFlush(user);
+
+		schedulingService.schedule(
+				getRunnable(savedEntity),
+				savedEntity.getScheduledMinutes(),
+				savedEntity.getId()
+		);
 	}
 
 	public User getLoggedInUser() {
@@ -69,5 +94,33 @@ public class UserService {
 			username = principal.toString();
 		}
 		return username;
+	}
+
+	private Runnable getRunnable(UserEntity savedEntity) {
+		return () -> {
+			try {
+				YouTube.Videos.List request = youtubeService.videos().list("id");
+
+				VideoListResponse response = request.setChart("mostPopular")
+						.setMaxResults(1L)
+						.setRegionCode(savedEntity.getRegionCode())
+						.execute();
+
+				System.out.println(response);
+
+				YouTube.CommentThreads.List commentThreadsRequest = youtubeService.commentThreads()
+						.list("id");
+				CommentThreadListResponse commentThreadsResponse = commentThreadsRequest.setKey(apiKeyProvider.getKey())
+						.setMaxResults(1L)
+						.setOrder("relevance")
+						.setVideoId("PX4CKMmumHQ")
+						.execute();
+				System.out.println(commentThreadsResponse);
+
+				// &lc={commentId}
+			} catch (IOException e) {
+				throw new RuntimeException(e.getLocalizedMessage());
+			}
+		};
 	}
 }
