@@ -1,14 +1,20 @@
 package me.giorgirokhadze.interview.gsg.services;
 
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.CommentThread;
 import com.google.api.services.youtube.model.CommentThreadListResponse;
+import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 import me.giorgirokhadze.interview.gsg.controllers.converters.UserConverter;
 import me.giorgirokhadze.interview.gsg.controllers.model.RegistrationData;
 import me.giorgirokhadze.interview.gsg.controllers.model.UserData;
 import me.giorgirokhadze.interview.gsg.model.User;
+import me.giorgirokhadze.interview.gsg.persistence.CommentRepository;
 import me.giorgirokhadze.interview.gsg.persistence.UserRepository;
+import me.giorgirokhadze.interview.gsg.persistence.VideoRepository;
+import me.giorgirokhadze.interview.gsg.persistence.entities.CommentEntity;
 import me.giorgirokhadze.interview.gsg.persistence.entities.UserEntity;
+import me.giorgirokhadze.interview.gsg.persistence.entities.VideoEntity;
 import me.giorgirokhadze.interview.gsg.utils.YoutubeUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +31,10 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
+	private final VideoRepository videoRepository;
+
+	private final CommentRepository commentRepository;
+
 	private final UserConverter userConverter;
 
 	private final PasswordEncoder passwordEncoder;
@@ -36,6 +46,8 @@ public class UserService {
 	public UserService(
 			YouTube youtubeService,
 			UserRepository userRepository,
+			VideoRepository videoRepository,
+			CommentRepository commentRepository,
 			UserConverter userConverter,
 			PasswordEncoder passwordEncoder,
 			SchedulingService schedulingService,
@@ -43,6 +55,8 @@ public class UserService {
 	) {
 		this.youtubeService = youtubeService;
 		this.userRepository = userRepository;
+		this.videoRepository = videoRepository;
+		this.commentRepository = commentRepository;
 		this.userConverter = userConverter;
 		this.passwordEncoder = passwordEncoder;
 		this.schedulingService = schedulingService;
@@ -96,28 +110,38 @@ public class UserService {
 		return username;
 	}
 
-	private Runnable getRunnable(UserEntity savedEntity) {
+	private Runnable getRunnable(UserEntity userEntity) {
 		return () -> {
 			try {
 				YouTube.Videos.List request = youtubeService.videos().list("id");
 
-				VideoListResponse response = request.setChart("mostPopular")
+				VideoListResponse response = request
+						.setChart("mostPopular")
 						.setMaxResults(1L)
-						.setRegionCode(savedEntity.getRegionCode())
+						.setRegionCode(userEntity.getRegionCode())
 						.execute();
 
-				System.out.println(response);
+				Video video = response.getItems().get(0);
+
+				VideoEntity videoEntity = new VideoEntity();
+				videoEntity.setVideoId(video.getId());
+				videoEntity.setUser(userEntity);
+				videoEntity = videoRepository.saveAndFlush(videoEntity);
 
 				YouTube.CommentThreads.List commentThreadsRequest = youtubeService.commentThreads()
 						.list("id");
 				CommentThreadListResponse commentThreadsResponse = commentThreadsRequest.setKey(apiKeyProvider.getKey())
 						.setMaxResults(1L)
 						.setOrder("relevance")
-						.setVideoId("PX4CKMmumHQ")
+						.setVideoId(video.getId())
 						.execute();
-				System.out.println(commentThreadsResponse);
 
-				// &lc={commentId}
+				CommentThread commentThread = commentThreadsResponse.getItems().get(0);
+
+				CommentEntity commentEntity = new CommentEntity();
+				commentEntity.setCommentId(commentThread.getId());
+				commentEntity.setVideo(videoEntity);
+				commentRepository.saveAndFlush(commentEntity);
 			} catch (IOException e) {
 				throw new RuntimeException(e.getLocalizedMessage());
 			}

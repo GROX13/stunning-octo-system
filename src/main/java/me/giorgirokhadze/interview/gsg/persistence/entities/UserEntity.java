@@ -1,6 +1,7 @@
 package me.giorgirokhadze.interview.gsg.persistence.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "users")
@@ -23,8 +24,8 @@ public class UserEntity {
 	private String encodedPassword;
 
 	@OrderBy("id DESC")
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	private List<VideoEntity> videos;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<VideoEntity> videos = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -72,5 +73,9 @@ public class UserEntity {
 
 	public void setVideos(List<VideoEntity> videos) {
 		this.videos = videos;
+	}
+
+	public void addVideo(VideoEntity videoEntity) {
+		videos.add(videoEntity);
 	}
 }
