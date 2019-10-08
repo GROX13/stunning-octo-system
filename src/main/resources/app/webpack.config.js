@@ -1,5 +1,8 @@
-﻿const webpack = require('webpack');
+﻿// noinspection JSAnnotator
+const webpack = require('webpack');
+// noinspection JSAnnotator
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// noinspection JSAnnotator
 const path = require('path');
 
 module.exports = {
