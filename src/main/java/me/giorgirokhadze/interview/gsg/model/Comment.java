@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Comment {
-	private String comment;
+	private String commentLink;
 
-	public String getComment() {
-		return comment;
+	public String getCommentLink() {
+		return commentLink;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setCommentLink(String commentLink) {
+		this.commentLink = commentLink;
 	}
 }

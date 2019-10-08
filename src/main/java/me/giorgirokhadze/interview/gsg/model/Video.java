@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Video {
-	private String videoUrl;
+	private String videoLink;
 	private Comment comment;
 
-	public String getVideoUrl() {
-		return videoUrl;
+	public String getVideoLink() {
+		return videoLink;
 	}
 
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
+	public void setVideoLink(String videoLink) {
+		this.videoLink = videoLink;
 	}
 
 	public Comment getComment() {
