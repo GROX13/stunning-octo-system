@@ -9,7 +9,7 @@
     <input type="password" name="password" [(ngModel)]="password">
   </label>
   </div>
-  <div><a routerLink="/register" class="nav-link">Register</a></div>
   <div *ngIf="invalidLogin" class="warning">Username or password is incorrect</div>
   <button (click)=checkLogin() class="btn btn-success">Login</button>
+  <div><a routerLink="/register" class="nav-link">Register</a></div>
 </div>

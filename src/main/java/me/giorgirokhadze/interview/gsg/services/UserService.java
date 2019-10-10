@@ -83,7 +83,7 @@ public class UserService {
 		UserEntity user = new UserEntity();
 		user.setUsername(registrationData.getUsername());
 		user.setEncodedPassword(passwordEncoder.encode(registrationData.getPassword()));
-		user.setRegionCode(registrationData.getRegionCode());
+		user.setRegionCode(registrationData.getRegionCode().toLowerCase());
 		user.setScheduledMinutes(registrationData.getScheduledMinutes());
 
 		final UserEntity savedEntity = userRepository.saveAndFlush(user);

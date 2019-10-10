@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   regionCode = '';
   password = '';
   repeatPassword = '';
-  errors: [];
+  errors: [string];
 
   constructor(
     private router: Router,
@@ -25,20 +25,25 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  registerClient() {
-    this.httpClientService.registerUser(new RegistrationData(
-      this.username,
-      this.password,
-      this.regionCode,
-      this.scheduledMinutes
-    )).subscribe(
-      response => {
-        console.info(response);
-      },
-      errorResponse => {
-        console.error(errorResponse);
-        this.errors = Object.values(errorResponse.error);
-      }
-    )
+  registerUser() {
+    if (this.password !== this.repeatPassword) {
+      this.errors = ['entered passwords do not match'];
+    } else {
+      this.httpClientService.registerUser(new RegistrationData(
+        this.username,
+        this.password,
+        this.regionCode,
+        this.scheduledMinutes
+      )).subscribe(
+        response => {
+          console.info(response);
+          this.router.navigate(['login']);
+        },
+        errorResponse => {
+          console.error(errorResponse);
+          this.errors = Object.values(errorResponse.error);
+        }
+      )
+    }
   }
 }

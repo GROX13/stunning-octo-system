@@ -1,19 +1,38 @@
-<div>Username: {{user.username}}</div>
-<div>Region code: {{user.regionCode}}</div>
-<div>Scheduled minutes: {{user.scheduledMinutes}} min</div>
+<div *ngIf="user !== undefined">
+  <div>Username: {{user.username}}</div>
+  <div>Region code: {{user.regionCode}}</div>
+  <div>Scheduled minutes: {{user.scheduledMinutes}} min</div>
 
-<table *ngIf="user.videos.length > 0" border="1">
-  <thead></thead>
-  <tr>
-    <th>videoLink</th>
-    <th>commentLink</th>
-  </tr>
-  <tbody>
-  <tr *ngFor="let video of user.videos">
-    <td><a href="{{video.videoLink}}" target="_blank">{{video.videoLink}}</a></td>
-    <td><a href="{{video.comment.commentLink}}" target="_blank">{{video.comment.commentLink}}</a></td>
-  </tr>
-  </tbody>
-</table>
+  <div>
+    <div>
+      Region code : <label>
+      <input type="text" name="regionCode" [(ngModel)]="regionCode">
+    </label>
+    </div>
+    <div>
+      Scheduled minutes : <label>
+      <input type="number" name="scheduledMinutes" [(ngModel)]="scheduledMinutes">
+    </label>
+    </div>
+    <div *ngFor="let error of errors" class="warning">
+      {{error}}
+    </div>
+    <button (click)=updateUser() class="btn btn-success">Update</button>
+  </div>
 
-<button routerLink="/logout" class="btn btn-success">Logout</button>
+  <table *ngIf="user.videos.length > 0" border="1">
+    <thead></thead>
+    <tr>
+      <th>videoLink</th>
+      <th>commentLink</th>
+    </tr>
+    <tbody>
+    <tr *ngFor="let video of user.videos">
+      <td><a href="{{video.videoLink}}" target="_blank">{{video.videoLink}}</a></td>
+      <td><a href="{{video.comment.commentLink}}" target="_blank">{{video.comment.commentLink}}</a></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <button routerLink="/logout" class="btn btn-success">Logout</button>
+</div>
