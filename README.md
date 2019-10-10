@@ -6,7 +6,10 @@ Which you'll need to add in `/etc/nginx/conf.d/` folder. Afterwards you'll need 
 You'll also might need to add `giorgirokhadze.me` into `/etc/hosts` file like `127.0.0.1       localhost giorgirokhadze.me`. If you would like to use another url you can modify 
 it to your liking but will also need to modify configuration. If you are using any of the IDE you can run application directly from it by running `me.giorgirokhadze.interview.gsg.Application` 
 else you will need to run `gradle build` and run `jar` from command line. On the web part of application for testing purposes you can run `ng serve --host giorgirokhadze.me --disable-host-check`. 
-After you can view application by visiting: [http://giorgirokhadze.me/](http://giorgirokhadze.me/).
+After you can view application by visiting: http://giorgirokhadze.me/
+
+### Creating service account
+https://developers.google.com/identity/protocols/OAuth2ServiceAccount
 
 ### Running with dev profile
 

@@ -5,12 +5,15 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.YouTubeScopes;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,10 +25,8 @@ public class YoutubeUtils {
 	private static final String CLIENT_SECRETS = "client_secret.json";
 	private static final String API_KEY = "youtube_api_key.txt";
 	private static final String SERVICE_ACCOUNT_KEY = "service_account_key.txt";
-	private static final Collection<String> SCOPES = Arrays.asList(
-			"https://www.googleapis.com/auth/youtube.readonly",
-			"https://www.googleapis.com/auth/youtube.force-ssl"
-	);
+	private static final String SERVICE_ACCOUNT_PRIVATE_KEY = "stunning-octo-system.p12";
+	private static final Collection<String> SCOPES = Arrays.asList(YouTubeScopes.YOUTUBE_READONLY, YouTubeScopes.YOUTUBE_FORCE_SSL);
 
 	private static final String APPLICATION_NAME = "Stunning octo system";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -41,6 +42,39 @@ public class YoutubeUtils {
 		Credential credential = authorize(httpTransport);
 		return new YouTube.Builder(httpTransport, JSON_FACTORY, credential)
 				.setApplicationName(APPLICATION_NAME)
+				.build();
+	}
+
+	/**
+	 * Build and return an authorized API client service.
+	 *
+	 * @return an authorized API client service
+	 * @throws GeneralSecurityException, IOException
+	 */
+	public static YouTube getServiceOAuth() throws GeneralSecurityException, IOException {
+		final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		Credential credential = authorizeOAuth(httpTransport);
+		return new YouTube.Builder(httpTransport, JSON_FACTORY, credential)
+				.setApplicationName(APPLICATION_NAME)
+				.build();
+	}
+
+	/**
+	 * Create an authorized Credential object.
+	 *
+	 * @return an authorized Credential object.
+	 * @throws IOException
+	 */
+	private static Credential authorizeOAuth(final NetHttpTransport httpTransport) throws IOException, GeneralSecurityException {
+		return new GoogleCredential.Builder()
+				.setTransport(httpTransport)
+				.setJsonFactory(JSON_FACTORY)
+				.setServiceAccountId("sos-service-account@stunning-octo-system.iam.gserviceaccount.com")
+				.setServiceAccountPrivateKeyFromP12File(
+						new File(YoutubeUtils.class.getClassLoader().getResource(SERVICE_ACCOUNT_PRIVATE_KEY).getFile())
+				)
+				.setServiceAccountScopes(SCOPES)
+				.setServiceAccountUser("giorgirokhadze@gmail.com")
 				.build();
 	}
 

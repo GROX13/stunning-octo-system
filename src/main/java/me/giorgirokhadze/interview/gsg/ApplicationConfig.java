@@ -34,6 +34,12 @@ public class ApplicationConfig {
 	}
 
 	@Bean
+	@Profile("prod")
+	public YouTube youTubeOAuth() throws GeneralSecurityException, IOException {
+		return YoutubeUtils.getServiceOAuth();
+	}
+
+	@Bean
 	public YoutubeUtils.ApiKeyProvider apiKeyProvider() throws IOException {
 		return YoutubeUtils.getApiKeyProvider();
 	}
