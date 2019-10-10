@@ -1,6 +1,16 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
+export class RegistrationData {
+  constructor(
+    public username: string,
+    public password: string,
+    public regionCode: string,
+    public scheduledMinutes: number
+  ) {
+  }
+}
+
 export class UserData {
   constructor(
     public regionCode: string,
@@ -54,7 +64,11 @@ export class HttpClientService {
   }
 
   updateUser(userdata: UserData) {
-    return this.httpClient.post<UserData>("/user/update", userdata, {headers: this.getHeader()});
+    return this.httpClient.post("/user/update", userdata, {headers: this.getHeader()});
+  }
+
+  registerUser(registrationData: RegistrationData) {
+    return this.httpClient.post("/user/register", registrationData);
   }
 
   private getHeader() {

@@ -1,10 +1,8 @@
-<p>home works!</p>
+<div>Username: {{user.username}}</div>
+<div>Region code: {{user.regionCode}}</div>
+<div>Scheduled minutes: {{user.scheduledMinutes}} min</div>
 
-<div>{{user.username}}</div>
-<div>{{user.regionCode}}</div>
-<div>{{user.scheduledMinutes}}</div>
-
-<table border="1">
+<table *ngIf="user.videos.length > 0" border="1">
   <thead></thead>
   <tr>
     <th>videoLink</th>
@@ -12,8 +10,10 @@
   </tr>
   <tbody>
   <tr *ngFor="let video of user.videos">
-    <td>{{video.videoLink}}</td>
-    <td>{{video.comment.commentLink}}</td>
+    <td><a href="{{video.videoLink}}" target="_blank">{{video.videoLink}}</a></td>
+    <td><a href="{{video.comment.commentLink}}" target="_blank">{{video.comment.commentLink}}</a></td>
   </tr>
   </tbody>
 </table>
+
+<button routerLink="/logout" class="btn btn-success">Logout</button>

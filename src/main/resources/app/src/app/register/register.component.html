@@ -1,1 +1,32 @@
-<p>register works!</p>
+﻿<div class="container">
+  <div>
+    Username : <label>
+    <input type="text" name="username" [(ngModel)]="username">
+  </label>
+  </div>
+  <div>
+    Region code : <label>
+    <input type="text" name="regionCode" [(ngModel)]="regionCode">
+  </label>
+  </div>
+  <div>
+    Scheduled minutes : <label>
+    <input type="number" name="scheduledMinutes" [(ngModel)]="scheduledMinutes">
+  </label>
+  </div>
+  <div>
+    Password : <label>
+    <input type="password" name="password" [(ngModel)]="password">
+  </label>
+  </div>
+  <div>
+    Repeat password : <label>
+    <input type="password" name="repeatPassword" [(ngModel)]="repeatPassword">
+  </label>
+  </div>
+  <div *ngFor="let error of errors" class="warning">
+    {{error}}
+  </div>
+  <button (click)=registerClient() class="btn btn-success">Register</button>
+  <div><a routerLink="/login" class="nav-link">Login</a></div>
+</div>

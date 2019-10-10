@@ -95,6 +95,7 @@ public class UserService {
 		);
 	}
 
+	@Transactional
 	public User getLoggedInUser() {
 		return userConverter.convert(userRepository.findByUsername(getLoggedInUsername()));
 	}
@@ -123,11 +124,6 @@ public class UserService {
 
 				Video video = response.getItems().get(0);
 
-				VideoEntity videoEntity = new VideoEntity();
-				videoEntity.setVideoId(video.getId());
-				videoEntity.setUser(userEntity);
-				videoEntity = videoRepository.saveAndFlush(videoEntity);
-
 				YouTube.CommentThreads.List commentThreadsRequest = youtubeService.commentThreads()
 						.list("id");
 				CommentThreadListResponse commentThreadsResponse = commentThreadsRequest.setKey(apiKeyProvider.getKey())
@@ -138,10 +134,20 @@ public class UserService {
 
 				CommentThread commentThread = commentThreadsResponse.getItems().get(0);
 
+				VideoEntity videoEntity = new VideoEntity();
+				videoEntity.setVideoId(video.getId());
+				videoEntity.setUser(userEntity);
+				videoEntity = videoRepository.save(videoEntity);
+
 				CommentEntity commentEntity = new CommentEntity();
 				commentEntity.setCommentId(commentThread.getId());
 				commentEntity.setVideo(videoEntity);
-				commentRepository.saveAndFlush(commentEntity);
+				commentEntity = commentRepository.save(commentEntity);
+
+				videoEntity.addComment(commentEntity);
+				userEntity.addVideo(videoEntity);
+
+				userRepository.save(userEntity);
 			} catch (IOException e) {
 				throw new RuntimeException(e.getLocalizedMessage());
 			}

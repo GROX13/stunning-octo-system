@@ -1,10 +1,15 @@
 <div class="container">
   <div>
-    Username : <input type="text" name="username" [(ngModel)]="username">
+    Username : <label>
+    <input type="text" name="username" [(ngModel)]="username">
+  </label>
   </div>
   <div>
-    Password : <input type="password" name="password" [(ngModel)]="password">
+    Password : <label>
+    <input type="password" name="password" [(ngModel)]="password">
+  </label>
   </div>
-  <div *ngIf="invalidLogin" style="color: red">Username or password is incorrect</div>
+  <div><a routerLink="/register" class="nav-link">Register</a></div>
+  <div *ngIf="invalidLogin" class="warning">Username or password is incorrect</div>
   <button (click)=checkLogin() class="btn btn-success">Login</button>
 </div>
