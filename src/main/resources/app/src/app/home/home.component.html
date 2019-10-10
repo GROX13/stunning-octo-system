@@ -1,0 +1,19 @@
+<p>home works!</p>
+
+<div>{{user.username}}</div>
+<div>{{user.regionCode}}</div>
+<div>{{user.scheduledMinutes}}</div>
+
+<table border="1">
+  <thead></thead>
+  <tr>
+    <th>videoLink</th>
+    <th>commentLink</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let video of user.videos">
+    <td>{{video.videoLink}}</td>
+    <td>{{video.comment.commentLink}}</td>
+  </tr>
+  </tbody>
+</table>
