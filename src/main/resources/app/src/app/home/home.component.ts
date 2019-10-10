@@ -1,34 +1,39 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {first} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {HttpClientService, User} from "../http-client.service";
+import {Router} from "@angular/router";
+import {AuthenticationService} from "../authentication.service";
 
-import {User} from '@/_models';
-import {AuthenticationService, UserService} from '@/_services';
-
-@Component({templateUrl: 'home.component.html'})
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
 export class HomeComponent implements OnInit {
-	currentUser: User;
-	users = [];
 
-	constructor(
-		private authenticationService: AuthenticationService,
-		private userService: UserService
-	) {
-		this.currentUser = this.authenticationService.currentUserValue;
-	}
+  user: User;
 
-	ngOnInit() {
-		this.loadAllUsers();
-	}
+  constructor(
+    private router: Router,
+    private httpClientService: HttpClientService,
+    private authenticationService: AuthenticationService
+  ) {
+  }
 
-	deleteUser(id: number) {
-		this.userService.delete(id)
-			.pipe(first())
-			.subscribe(() => this.loadAllUsers());
-	}
+  ngOnInit() {
+    if (!this.authenticationService.isUserLoggedIn()) {
+      console.warn('User not authenticated');
+      this.router.navigate(['login']);
+    }
+    this.httpClientService.getUser().subscribe(
+      response => this.handleSuccessfulResponse(response),
+      error => {
+        console.error(error);
+        return this.router.navigate(['login']);
+      }
+    );
+  }
 
-	private loadAllUsers() {
-		this.userService.getAll()
-			.pipe(first())
-			.subscribe(users => this.users = users);
-	}
+  handleSuccessfulResponse(response) {
+    this.user = response;
+  }
 }

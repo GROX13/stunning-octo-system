@@ -1,9 +1,19 @@
-﻿<h1>Hi {{currentUser.firstName}}!</h1>
-<p>You're logged in with Angular 8!!</p>
-<h3>All registered users:</h3>
-<ul>
-	<li *ngFor="let user of users">
-		{{user.username}} ({{user.firstName}} {{user.lastName}})
-		- <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
-	</li>
-</ul>
+<p>home works!</p>
+
+<div>{{user.username}}</div>
+<div>{{user.regionCode}}</div>
+<div>{{user.scheduledMinutes}}</div>
+
+<table border="1">
+  <thead></thead>
+  <tr>
+    <th>videoLink</th>
+    <th>commentLink</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let video of user.videos">
+    <td>{{video.videoLink}}</td>
+    <td>{{video.comment.commentLink}}</td>
+  </tr>
+  </tbody>
+</table>
