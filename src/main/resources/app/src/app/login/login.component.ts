@@ -30,7 +30,9 @@ export class LoginComponent implements OnInit {
       },
       error => {
         this.invalidLogin = true;
+        // @ts-ignore
         sessionStorage.removeItem('btoa');
+        // @ts-ignore
         console.error(error);
       }
     )

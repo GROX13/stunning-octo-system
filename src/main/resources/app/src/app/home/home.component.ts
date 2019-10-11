@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   user: User;
   scheduledMinutes = 0;
   regionCode = '';
-  errors: [string];
+  errors: string[];
 
   constructor(
     private router: Router,
@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!this.authenticationService.isUserLoggedIn()) {
+      // @ts-ignore
       console.warn('User not authenticated');
       this.router.navigate(['login']);
     }
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.httpClientService.getUser().subscribe(
       response => this.handleSuccessfulResponse(response),
       error => {
+        // @ts-ignore
         console.error(error);
         this.router.navigate(['login']);
       }
@@ -56,12 +58,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     )).subscribe(
       response => {
         this.errors = [];
+        // @ts-ignore
         console.info(response);
         this.getUserDetails();
       },
       errorResponse => {
+        // @ts-ignore
         console.error(errorResponse);
-        this.errors = Object.values(errorResponse.error);
+        if (errorResponse.status === 400) {
+          // @ts-ignore
+          this.errors = Object.values(errorResponse.error);
+        } else
+          this.errors = ['something went wrong on server'];
       }
     );
   }

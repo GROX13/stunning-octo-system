@@ -134,23 +134,28 @@ public class UserService {
 
 				CommentThread commentThread = commentThreadsResponse.getItems().get(0);
 
-				VideoEntity videoEntity = new VideoEntity();
-				videoEntity.setVideoId(video.getId());
-				videoEntity.setUser(userEntity);
-				videoEntity = videoRepository.save(videoEntity);
-
-				CommentEntity commentEntity = new CommentEntity();
-				commentEntity.setCommentId(commentThread.getId());
-				commentEntity.setVideo(videoEntity);
-				commentEntity = commentRepository.save(commentEntity);
-
-				videoEntity.addComment(commentEntity);
-				userEntity.addVideo(videoEntity);
-
-				userRepository.save(userEntity);
+				saveData(userEntity, video, commentThread);
 			} catch (IOException e) {
 				throw new RuntimeException(e.getLocalizedMessage());
 			}
 		};
+	}
+
+	@Transactional
+	void saveData(UserEntity userEntity, Video video, CommentThread commentThread) {
+		VideoEntity videoEntity = new VideoEntity();
+		videoEntity.setVideoId(video.getId());
+		videoEntity.setUser(userEntity);
+		videoEntity = videoRepository.save(videoEntity);
+
+		CommentEntity commentEntity = new CommentEntity();
+		commentEntity.setCommentId(commentThread.getId());
+		commentEntity.setVideo(videoEntity);
+		commentEntity = commentRepository.save(commentEntity);
+
+		videoEntity.addComment(commentEntity);
+		userEntity.addVideo(videoEntity);
+
+		userRepository.save(userEntity);
 	}
 }

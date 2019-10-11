@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   regionCode = '';
   password = '';
   repeatPassword = '';
-  errors: [string];
+  errors: string[];
 
   constructor(
     private router: Router,
@@ -35,13 +35,15 @@ export class RegisterComponent implements OnInit {
         this.regionCode,
         this.scheduledMinutes
       )).subscribe(
-        response => {
-          console.info(response);
-          this.router.navigate(['login']);
-        },
+        response => this.router.navigate(['login']),
         errorResponse => {
+          // @ts-ignore
           console.error(errorResponse);
-          this.errors = Object.values(errorResponse.error);
+          if (errorResponse.status === 400) {
+            // @ts-ignore
+            this.errors = Object.values(errorResponse.error);
+          } else
+            this.errors = ['something went wrong on server'];
         }
       )
     }

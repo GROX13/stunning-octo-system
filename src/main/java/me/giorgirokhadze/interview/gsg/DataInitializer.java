@@ -32,7 +32,6 @@ public class DataInitializer implements CommandLineRunner {
 			userEntity.setRegionCode(REGION_CODE);
 			userEntity.setScheduledMinutes(15);
 			userEntity.setEncodedPassword(passwordEncoder.encode(PASSWORD));
-
 			userRepository.saveAndFlush(userEntity);
 		}
 	}

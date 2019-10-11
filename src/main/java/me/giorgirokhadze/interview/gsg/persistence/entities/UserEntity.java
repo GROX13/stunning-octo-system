@@ -24,7 +24,7 @@ public class UserEntity {
 	private String encodedPassword;
 
 	@OrderBy("id DESC")
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<VideoEntity> videos = new ArrayList<>();
 
 	public Long getId() {
