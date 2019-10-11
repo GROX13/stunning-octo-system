@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SequenceGenerator(name = "users_seq_gen", sequenceName = "users_seq", allocationSize = 1)
 @Entity(name = "users")
 public class UserEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "users_seq_gen", strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(name = "username", unique = true, nullable = false, updatable = false)
@@ -24,7 +25,7 @@ public class UserEntity {
 	private String encodedPassword;
 
 	@OrderBy("id DESC")
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<VideoEntity> videos = new ArrayList<>();
 
 	public Long getId() {

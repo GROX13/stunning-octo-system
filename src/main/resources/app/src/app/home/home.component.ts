@@ -58,8 +58,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     )).subscribe(
       response => {
         this.errors = [];
-        // @ts-ignore
-        console.info(response);
         this.getUserDetails();
       },
       errorResponse => {

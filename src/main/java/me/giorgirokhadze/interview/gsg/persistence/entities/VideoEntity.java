@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SequenceGenerator(name = "videos_seq_gen", sequenceName = "videos_seq", allocationSize = 1)
 @Entity(name = "videos")
 public class VideoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "videos_seq_gen", strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(name = "video_id", nullable = false)
@@ -18,7 +19,7 @@ public class VideoEntity {
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
 	private List<CommentEntity> comments = new ArrayList<>();
 
 	public Long getId() {

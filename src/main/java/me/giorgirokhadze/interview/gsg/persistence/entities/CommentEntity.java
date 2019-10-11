@@ -2,11 +2,12 @@ package me.giorgirokhadze.interview.gsg.persistence.entities;
 
 import javax.persistence.*;
 
+@SequenceGenerator(name = "comments_seq_gen", sequenceName = "comments_seq", allocationSize = 1)
 @Entity(name = "comments")
 public class CommentEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "comments_seq_gen", strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(name = "comment_id", nullable = false)

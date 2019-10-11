@@ -3,10 +3,11 @@ package me.giorgirokhadze.interview.gsg.persistence
 import me.giorgirokhadze.interview.gsg.persistence.entities.UserEntity
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 
-//@SpringBootTest
+@SpringBootTest
 class UserRepositorySpec extends Specification {
 
 	@Autowired

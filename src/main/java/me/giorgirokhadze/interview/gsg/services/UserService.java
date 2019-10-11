@@ -72,7 +72,7 @@ public class UserService {
 		final UserEntity savedEntity = userRepository.saveAndFlush(user);
 
 		schedulingService.schedule(
-				getRunnable(savedEntity),
+				getRunnable(savedEntity.getUsername(), savedEntity.getRegionCode()),
 				savedEntity.getScheduledMinutes(),
 				savedEntity.getId()
 		);
@@ -89,7 +89,7 @@ public class UserService {
 		final UserEntity savedEntity = userRepository.saveAndFlush(user);
 
 		schedulingService.schedule(
-				getRunnable(savedEntity),
+				getRunnable(savedEntity.getUsername(), savedEntity.getRegionCode()),
 				savedEntity.getScheduledMinutes(),
 				savedEntity.getId()
 		);
@@ -111,7 +111,7 @@ public class UserService {
 		return username;
 	}
 
-	private Runnable getRunnable(UserEntity userEntity) {
+	private Runnable getRunnable(String username, String regionCode) {
 		return () -> {
 			try {
 				YouTube.Videos.List request = youtubeService.videos().list("id");
@@ -119,7 +119,7 @@ public class UserService {
 				VideoListResponse response = request
 						.setChart("mostPopular")
 						.setMaxResults(1L)
-						.setRegionCode(userEntity.getRegionCode())
+						.setRegionCode(regionCode)
 						.execute();
 
 				Video video = response.getItems().get(0);
@@ -134,7 +134,7 @@ public class UserService {
 
 				CommentThread commentThread = commentThreadsResponse.getItems().get(0);
 
-				saveData(userEntity, video, commentThread);
+				saveData(username, video, commentThread);
 			} catch (IOException e) {
 				throw new RuntimeException(e.getLocalizedMessage());
 			}
@@ -142,7 +142,9 @@ public class UserService {
 	}
 
 	@Transactional
-	void saveData(UserEntity userEntity, Video video, CommentThread commentThread) {
+	protected void saveData(String username, Video video, CommentThread commentThread) {
+		UserEntity userEntity = userRepository.findByUsername(username);
+		
 		VideoEntity videoEntity = new VideoEntity();
 		videoEntity.setVideoId(video.getId());
 		videoEntity.setUser(userEntity);
